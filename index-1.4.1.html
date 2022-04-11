@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>1.4. Visibilité de contenu - Sans traitement</title>
+    <script>
+        // Permet de calculer la moyenne d'un tableau
+        function ArrayAvg(myArray) {
+            var i = 0, summ = 0, ArrayLen = myArray.length;
+            while (i < ArrayLen) {
+                summ = summ + parseInt(myArray[i++]);
+        }
+            return summ / ArrayLen;
+        }
+
+        var start_load_time = performance.now(); 
+        var nbTest = parseInt(localStorage.getItem("nbTest1"));
+        var result = localStorage.getItem("result1");
+
+        if(!nbTest) {
+            nbTest = 0;
+            result = []
+        } else {
+            result = result.split(",")
+        }
+
+        window.onload = Pageloadtime;
+
+        function Pageloadtime() {  
+            var pgloadtime = performance.now() - start_load_time;
+            result.push(pgloadtime);
+            document.getElementById("temps").innerHTML = "Le temps de chargement de la page moyen est de " + parseFloat(ArrayAvg(result)).toFixed(2) + " secondes"; 
+
+            if(nbTest >= 100) {
+                localStorage.setItem("nbTest1", null)
+                localStorage.setItem("result1", null)
+            } else {
+                nbTest++;
+                console.log(result, result.toString())
+                localStorage.setItem("nbTest1", nbTest);
+                localStorage.setItem("result1", result.toString());
+                setTimeout(() => {
+                    location.reload();
+                }, 100)
+            }
+        }
+    </script>
+</head>
+<body id="result">
+    <p id="temps"></p>
+    <div style="height: 100vh; background: gray"></div>
+    <img src="https://www.applesfromny.com/wp-content/uploads/2020/06/SnapdragonNEW.png" alt=""></img>
+    <img src="https://cdn.britannica.com/47/103847-050-8E18B710/varieties-apples.jpg" alt=""></img>    
+    <img src="https://media.istockphoto.com/photos/red-apple-picture-id184276818?k=20&m=184276818&s=612x612&w=0&h=QxOcueqAUVTdiJ7DVoCu-BkNCIuwliPEgtAQhgvBA_g=" alt=""></img>    
+    <img src="https://usapple.org/wp-content/uploads/2019/10/apple-pink-lady.png" alt=""></img>    
+    <img src="https://imageio.forbes.com/specials-images/imageserve/5c13d14731358e5b4339c564/0x0.jpg?format=jpg&crop=416,416,x0,y0,safe&fit=crop" alt=""></img>    
+    <img src="https://www.apple.com/v/apple-events/home/u/images/meta/overview__bcphzsdb4fpu_og.png?202203161557" alt=""></img>    
+    <img src="https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=434174436675167" alt=""></img>    
+    <img src="https://yt3.ggpht.com/ytc/AKedOLRxpcB4HxR7fip43w1kIx4hDsCTbOOgARKFgY3qYA=s900-c-k-c0x00ffffff-no-rj" alt=""></img>    
+    <img src="https://cdn.vox-cdn.com/thumbor/Pz0vdQ0aL4DlJcarWhwZLk2RmBw=/0x0:1323x638/1200x800/filters:focal(539x248:749x458)/cdn.vox-cdn.com/uploads/chorus_image/image/69851120/Screenshot_2021_09_10_7.38.39_AM.0.png" alt=""></img>    
+    <img src="https://assets.simon.com/tenantlogos/279.png" alt=""></img>    
+    <img src="https://media.istockphoto.com/photos/red-apple-with-leaf-isolated-on-white-background-picture-id185262648?b=1&k=20&m=185262648&s=170667a&w=0&h=2ouM2rkF5oBplBmZdqs3hSOdBzA4mcGNCoF2P0KUMTM=" alt=""></img>    
+    <img src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/apples-at-farmers-market-royalty-free-image-1627321463.jpg?crop=1.00xw:0.631xh;0.00160xw,0.206xh&resize=1200:*" alt=""></img>    
+    <img src="https://cdn.vox-cdn.com/thumbor/A5DdRNwo2UZvmJFA5dSJx7oiffw=/0x0:2040x1360/1200x800/filters:focal(857x517:1183x843)/cdn.vox-cdn.com/uploads/chorus_image/image/69698170/acastro_180604_1777_apple_wwdc_0002.0.jpg" alt=""></img>    
+    <img src="https://post.healthline.com/wp-content/uploads/2020/09/Do_Apples_Affect_Diabetes_and_Blood_Sugar_Levels-732x549-thumbnail-1-732x549.jpg" alt=""></img>    
+    <img src="https://i.ytimg.com/vi/5AwdkGKmZ0I/maxresdefault.jpg" alt=""></img>    
+    <img src="https://9to5mac.com/wp-content/uploads/sites/6/2021/12/apple-2022.jpg?quality=82&strip=all&w=1600" alt=""></img>    
+    <img src="https://sweetango.com/wp-content/themes/sweetango/ft-assets/images/home/hero/apples2.png" alt=""></img>    
+    <img src="https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1727544364.jpg" alt=""></img>    
+    <img src="https://support.apple.com/content/dam/edam/applecare/images/en_US/psp/featured-section-give-back-trade-in_2x.jpg" alt=""></img>    
+    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/store-card-13-holiday-giftcards-asit-agc-nav-202111?wid=400&hei=260&fmt=png-alpha&.v=1635264815000" alt=""></img>    
+    <img src="https://support.apple.com/content/dam/edam/applecare/images/en_US/psp/content-link-watch-workout_2x.png" alt=""></img>    
+    <img src="https://www.backmarket.com/cdn-cgi/image/format=auto,quality=75,width=640/https://images.ctfassets.net/mmeshd7gafk1/3zPFdwwYIwHLZjrxhTdtuD/8b15546c40d832ad8aeddc9670d1d3e8/_logo_Apple.png" alt=""></img>    
+    <img src="https://cdn1.sph.harvard.edu/wp-content/uploads/sites/30/2018/10/apple-2711629_1920.jpg" alt=""></img>    
+    <img src="https://media.istockphoto.com/photos/red-apple-with-leaf-picture-id683494078?k=20&m=683494078&s=612x612&w=0&h=MtHUc7vTTZGAAP4-o87T6v57g1KaJP5Vd_oh7LwQca8=" alt=""></img>    
+    <img src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg?crop=1.00xw:0.923xh;0,0.0486xh&resize=480:*" alt=""></img>    
+    <img src="https://image.shutterstock.com/image-vector/vector-red-apple-icon-260nw-659128897.jpg" alt=""></img>    
+    <img src="https://usapple.org/wp-content/uploads/2019/10/apple-granny-smith.png" alt=""></img>    
+    <img src="https://jobs.apple.com/static/images/og/en-us/default.jpg" alt=""></img>    
+    <img src="https://www.apple.com/v/apple-pay/o/images/overview/logo_apple__cltlfa7xve82_large.png" alt=""></img>    
+    <img src="https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" alt=""></img>    
+    <img src="https://pisces.bbystatic.com/image2/BestBuy_US/dam/MMT-459209-pol-apple-0164a04d-c2ed-4094-9af0-656bf8a99985.jpg;maxHeight=305;maxWidth=978" alt=""></img>    
+    <img src="https://media.wired.com/photos/6081f4280c9b5877078878e2/16:9/w_2399,h_1349,c_limit/business_plaintext_apple_1313768378.jpg" alt=""></img>    
+    <img src="https://imageio.forbes.com/specials-images/imageserve/5f3147051829d64a37359a41/Apple-stock--APPL-/960x0.jpg?fit=bounds&format=jpg&width=960" alt=""></img>    
+    <img src="https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=3531749833584263" alt=""></img>    
+    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/store-card-40-iphone-13-pro-202203_FMT_WHH?wid=618&hei=900&fmt=p-jpg&qlt=95&.v=1645052290458" alt=""></img>    
+    <img src="https://pbs.twimg.com/profile_images/1174747027986452480/cSlw47L-_400x400.png" alt=""></img>    
+    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airtag-og-202104?wid=600&hei=315&fmt=jpeg&qlt=95&.v=1617846552000" alt=""></img>    
+    <img src="https://www.apple.com/newsroom/images/default/apple-logo-og.jpg?202204072029" alt=""></img>    
+    <img src="https://cdn-prod.medicalnewstoday.com/content/images/articles/267/267290/a-woman-eating-a-green-apple.jpg" alt=""></img>    
+    <img src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2021_40/2841006/190430-apple-store-ew-539p.jpg" alt=""></img>    
+    <img src="https://s3-symbol-logo.tradingview.com/apple--600.png" alt=""></img>    
+    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MJWY3?wid=266&hei=291&fmt=png-alpha&.v=1625613219000" alt=""></img>    
+    <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts126/v4/3f/05/8a/3f058a56-078b-251f-b614-5ce29801b444/mza_16454986435767016931.png/1200x600wp.png" alt=""></img>    
+    <img src="https://cloudfront-us-east-2.images.arcpublishing.com/reuters/W527RUOISVJJLPFHMYQCGU2E5Y.jpg" alt=""></img>    
+    <img src="https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/kujhvwse/0bea6ba8-3d2f-4f64-a48b-2803cf3744e4.jpg" alt=""></img>    
+    <img src="https://images.macrumors.com/t/NYDgoM8XlhkISaJRRXtlhlIbQoI=/1200x1200/smart/article-new/2020/12/Apple-car-wheel-icon-feature-blue.jpg" alt=""></img>    
+    <img src="https://image.cnbcfm.com/api/v1/image/106587904-15928703582020-06-22t173405z_90636234_rc2heh9e4av9_rtrmadp_0_apple-developers.jpeg?v=1639177510" alt=""></img>    
+    <img src="https://support.apple.com/content/dam/edam/applecare/images/en_US/mac/featured-section-apple-support-app_2x.png" alt=""></img>    
+    <img src="https://www.collinsdictionary.com/images/full/apple_158989157.jpg" alt=""></img>    
+    <img src="https://images-prod.healthline.com/hlcmsresource/images/AN_images/health-benefits-of-apples-1296x728-feature.jpg" alt=""></img>    
+</body>
+</html>

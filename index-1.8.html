@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>1.8. L’attribut “srcset” - Avec traitement</title>
+    <script>
+        // Permet de calculer la moyenne d'un tableau
+        function ArrayAvg(myArray) {
+            var i = 0, summ = 0, ArrayLen = myArray.length;
+            while (i < ArrayLen) {
+                summ = summ + parseInt(myArray[i++]);
+        }
+            return summ / ArrayLen;
+        }
+
+        var start_load_time = performance.now(); 
+        var nbTest = parseInt(localStorage.getItem("nbTest1.8"));
+        var result = localStorage.getItem("result1.8");
+
+        if(!nbTest) {
+            nbTest = 0;
+            result = []
+        } else {
+            result = result.split(",")
+        }
+
+        window.onload = Pageloadtime;
+
+        function Pageloadtime() {  
+            var pgloadtime = performance.now() - start_load_time;
+            result.push(pgloadtime);
+            document.getElementById("temps").innerHTML = "Le temps de chargement de la page moyen est de " + parseFloat(ArrayAvg(result)).toFixed(2) + " secondes"; 
+
+            if(nbTest === 100) {
+                localStorage.setItem("nbTest1.8", null)
+                localStorage.setItem("result1.8", null)
+            } else {
+                nbTest++;
+                console.log(result, result.toString())
+                localStorage.setItem("nbTest1.8", nbTest);
+                localStorage.setItem("result1.8", result.toString());
+                setTimeout(() => {
+                    location.reload();
+                }, 100)
+            }
+        }
+    </script>
+</head>
+<body id="result">
+    <p id="temps"></p>
+    <div style="height: 100vh; background: gray"></div>
+    <img srcset="./resizedImages/albert-dehon-yejC65pltJc-unsplash_1x.jpg 480w, ./resizedImages/albert-dehon-yejC65pltJc-unsplash_2x.jpg 960w, ./resizedImages/albert-dehon-yejC65pltJc-unsplash_3x.jpg 1920w" alt="albert-dehon-yejC65pltJc-unsplash" />
+    <img srcset="./resizedImages/annie-spratt-MmW8QX5Bp0c-unsplash_1x.jpg 480w, ./resizedImages/annie-spratt-MmW8QX5Bp0c-unsplash_2x.jpg 960w, ./resizedImages/annie-spratt-MmW8QX5Bp0c-unsplash_3x.jpg 1920w" alt="annie-spratt-MmW8QX5Bp0c-unsplash" />
+    <img srcset="./resizedImages/anton-maksimov-5642-su-3jDZM3rgpz8-unsplash_1x.jpg 480w, ./resizedImages/anton-maksimov-5642-su-3jDZM3rgpz8-unsplash_2x.jpg 960w, ./resizedImages/anton-maksimov-5642-su-3jDZM3rgpz8-unsplash_3x.jpg 1920w" alt="anton-maksimov-5642-su-3jDZM3rgpz8-unsplash" />
+    <img srcset="./resizedImages/ardy-arjun-WfJ9rZBdWY8-unsplash_1x.jpg 480w, ./resizedImages/ardy-arjun-WfJ9rZBdWY8-unsplash_2x.jpg 960w, ./resizedImages/ardy-arjun-WfJ9rZBdWY8-unsplash_3x.jpg 1920w" alt="ardy-arjun-WfJ9rZBdWY8-unsplash" />
+    <img srcset="./resizedImages/batuhan-dogan-RPHnmOqWxaY-unsplash_1x.jpg 480w, ./resizedImages/batuhan-dogan-RPHnmOqWxaY-unsplash_2x.jpg 960w, ./resizedImages/batuhan-dogan-RPHnmOqWxaY-unsplash_3x.jpg 1920w" alt="batuhan-dogan-RPHnmOqWxaY-unsplash" />
+    <img srcset="./resizedImages/brittany-bendabout-iZX7yO1RTsE-unsplash_1x.jpg 480w, ./resizedImages/brittany-bendabout-iZX7yO1RTsE-unsplash_2x.jpg 960w, ./resizedImages/brittany-bendabout-iZX7yO1RTsE-unsplash_3x.jpg 1920w" alt="brittany-bendabout-iZX7yO1RTsE-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-4bMmpwPzCIs-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-4bMmpwPzCIs-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-4bMmpwPzCIs-unsplash_3x.jpg 1920w" alt="claudio-schwarz-4bMmpwPzCIs-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-6iowSYmaFyo-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-6iowSYmaFyo-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-6iowSYmaFyo-unsplash_3x.jpg 1920w" alt="claudio-schwarz-6iowSYmaFyo-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-8Syjmg44nFQ-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-8Syjmg44nFQ-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-8Syjmg44nFQ-unsplash_3x.jpg 1920w" alt="claudio-schwarz-8Syjmg44nFQ-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-CNuUu7F05Ao-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-CNuUu7F05Ao-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-CNuUu7F05Ao-unsplash_3x.jpg 1920w" alt="claudio-schwarz-CNuUu7F05Ao-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-EGfsYbZYd6Q-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-EGfsYbZYd6Q-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-EGfsYbZYd6Q-unsplash_3x.jpg 1920w" alt="claudio-schwarz-EGfsYbZYd6Q-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-eh1DXCvFcds-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-eh1DXCvFcds-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-eh1DXCvFcds-unsplash_3x.jpg 1920w" alt="claudio-schwarz-eh1DXCvFcds-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-F7g4gho79ds-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-F7g4gho79ds-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-F7g4gho79ds-unsplash_3x.jpg 1920w" alt="claudio-schwarz-F7g4gho79ds-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-Fa3Me1XTozo-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-Fa3Me1XTozo-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-Fa3Me1XTozo-unsplash_3x.jpg 1920w" alt="claudio-schwarz-Fa3Me1XTozo-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-IA9ywYR8ibw-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-IA9ywYR8ibw-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-IA9ywYR8ibw-unsplash_3x.jpg 1920w" alt="claudio-schwarz-IA9ywYR8ibw-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-J8njRHe3ay4-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-J8njRHe3ay4-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-J8njRHe3ay4-unsplash_3x.jpg 1920w" alt="claudio-schwarz-J8njRHe3ay4-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-KAhK2qi0D1w-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-KAhK2qi0D1w-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-KAhK2qi0D1w-unsplash_3x.jpg 1920w" alt="claudio-schwarz-KAhK2qi0D1w-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-lLqkzbMiPI-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-lLqkzbMiPI-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-lLqkzbMiPI-unsplash_3x.jpg 1920w" alt="claudio-schwarz-lLqkzbMiPI-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-M23NYjYgw94-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-M23NYjYgw94-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-M23NYjYgw94-unsplash_3x.jpg 1920w" alt="claudio-schwarz-M23NYjYgw94-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-MGrIQvbxWws-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-MGrIQvbxWws-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-MGrIQvbxWws-unsplash_3x.jpg 1920w" alt="claudio-schwarz-MGrIQvbxWws-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-Nc4hmYD7L7E-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-Nc4hmYD7L7E-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-Nc4hmYD7L7E-unsplash_3x.jpg 1920w" alt="claudio-schwarz-Nc4hmYD7L7E-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-NtU1zWPHfvw-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-NtU1zWPHfvw-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-NtU1zWPHfvw-unsplash_3x.jpg 1920w" alt="claudio-schwarz-NtU1zWPHfvw-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-PEwWaaPNxjM-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-PEwWaaPNxjM-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-PEwWaaPNxjM-unsplash_3x.jpg 1920w" alt="claudio-schwarz-PEwWaaPNxjM-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-ptnzhzAz3bM-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-ptnzhzAz3bM-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-ptnzhzAz3bM-unsplash_3x.jpg 1920w" alt="claudio-schwarz-ptnzhzAz3bM-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-UKqP_6nZW1Q-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-UKqP_6nZW1Q-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-UKqP_6nZW1Q-unsplash_3x.jpg 1920w" alt="claudio-schwarz-UKqP_6nZW1Q-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-V3n3U2R25M0-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-V3n3U2R25M0-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-V3n3U2R25M0-unsplash_3x.jpg 1920w" alt="claudio-schwarz-V3n3U2R25M0-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-W7M6dlO7M_Y-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-W7M6dlO7M_Y-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-W7M6dlO7M_Y-unsplash_3x.jpg 1920w" alt="claudio-schwarz-W7M6dlO7M_Y-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-WSaPvtvsjCc-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-WSaPvtvsjCc-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-WSaPvtvsjCc-unsplash_3x.jpg 1920w" alt="claudio-schwarz-WSaPvtvsjCc-unsplash" />
+    <img srcset="./resizedImages/claudio-schwarz-ZMwQIlG8Ito-unsplash_1x.jpg 480w, ./resizedImages/claudio-schwarz-ZMwQIlG8Ito-unsplash_2x.jpg 960w, ./resizedImages/claudio-schwarz-ZMwQIlG8Ito-unsplash_3x.jpg 1920w" alt="claudio-schwarz-ZMwQIlG8Ito-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-aNmGQmIQRpc-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-aNmGQmIQRpc-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-aNmGQmIQRpc-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-aNmGQmIQRpc-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-bB3auZ9wgug-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-bB3auZ9wgug-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-bB3auZ9wgug-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-bB3auZ9wgug-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-eEPrua1EXfA-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-eEPrua1EXfA-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-eEPrua1EXfA-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-eEPrua1EXfA-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-KG5S6fM3z_s-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-KG5S6fM3z_s-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-KG5S6fM3z_s-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-KG5S6fM3z_s-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-Mguuyn1TJIQ-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-Mguuyn1TJIQ-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-Mguuyn1TJIQ-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-Mguuyn1TJIQ-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-SgNlTddwbys-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-SgNlTddwbys-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-SgNlTddwbys-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-SgNlTddwbys-unsplash" />
+    <img srcset="./resizedImages/gabriella-clare-marino-z2FGLCb5amo-unsplash_1x.jpg 480w, ./resizedImages/gabriella-clare-marino-z2FGLCb5amo-unsplash_2x.jpg 960w, ./resizedImages/gabriella-clare-marino-z2FGLCb5amo-unsplash_3x.jpg 1920w" alt="gabriella-clare-marino-z2FGLCb5amo-unsplash" />
+    <img srcset="./resizedImages/halil-ibrahim-cetinkaya-l661E7tRKAU-unsplash_1x.jpg 480w, ./resizedImages/halil-ibrahim-cetinkaya-l661E7tRKAU-unsplash_2x.jpg 960w, ./resizedImages/halil-ibrahim-cetinkaya-l661E7tRKAU-unsplash_3x.jpg 1920w" alt="halil-ibrahim-cetinkaya-l661E7tRKAU-unsplash" />
+    <img srcset="./resizedImages/maksym-tymchyk-4RRvDen6rk4-unsplash_1x.jpg 480w, ./resizedImages/maksym-tymchyk-4RRvDen6rk4-unsplash_2x.jpg 960w, ./resizedImages/maksym-tymchyk-4RRvDen6rk4-unsplash_3x.jpg 1920w" alt="maksym-tymchyk-4RRvDen6rk4-unsplash" />
+    <img srcset="./resizedImages/maksym-tymchyk-AAsuvkUFbzQ-unsplash_1x.jpg 480w, ./resizedImages/maksym-tymchyk-AAsuvkUFbzQ-unsplash_2x.jpg 960w, ./resizedImages/maksym-tymchyk-AAsuvkUFbzQ-unsplash_3x.jpg 1920w" alt="maksym-tymchyk-AAsuvkUFbzQ-unsplash" />
+    <img srcset="./resizedImages/marc-kleen-MqQ6dpk7qfw-unsplash_1x.jpg 480w, ./resizedImages/marc-kleen-MqQ6dpk7qfw-unsplash_2x.jpg 960w, ./resizedImages/marc-kleen-MqQ6dpk7qfw-unsplash_3x.jpg 1920w" alt="marc-kleen-MqQ6dpk7qfw-unsplash" />
+    <img srcset="./resizedImages/micheile-com-B2oQudJevQY-unsplash_1x.jpg 480w, ./resizedImages/micheile-com-B2oQudJevQY-unsplash_2x.jpg 960w, ./resizedImages/micheile-com-B2oQudJevQY-unsplash_3x.jpg 1920w" alt="micheile-com-B2oQudJevQY-unsplash" />
+    <img srcset="./resizedImages/micheile-com-doeWwiscUPI-unsplash_1x.jpg 480w, ./resizedImages/micheile-com-doeWwiscUPI-unsplash_2x.jpg 960w, ./resizedImages/micheile-com-doeWwiscUPI-unsplash_3x.jpg 1920w" alt="micheile-com-doeWwiscUPI-unsplash" />
+    <img srcset="./resizedImages/mihajlo-sebalj-r_am9KeM0jU-unsplash_1x.jpg 480w, ./resizedImages/mihajlo-sebalj-r_am9KeM0jU-unsplash_2x.jpg 960w, ./resizedImages/mihajlo-sebalj-r_am9KeM0jU-unsplash_3x.jpg 1920w" alt="mihajlo-sebalj-r_am9KeM0jU-unsplash" />
+    <img srcset="./resizedImages/mitchell-luo-RJtd3FSXj4A-unsplash_1x.jpg 480w, ./resizedImages/mitchell-luo-RJtd3FSXj4A-unsplash_2x.jpg 960w, ./resizedImages/mitchell-luo-RJtd3FSXj4A-unsplash_3x.jpg 1920w" alt="mitchell-luo-RJtd3FSXj4A-unsplash" />
+    <img srcset="./resizedImages/sir-manuel-fT_lkiuxWBk-unsplash_1x.jpg 480w, ./resizedImages/sir-manuel-fT_lkiuxWBk-unsplash_2x.jpg 960w, ./resizedImages/sir-manuel-fT_lkiuxWBk-unsplash_3x.jpg 1920w" alt="sir-manuel-fT_lkiuxWBk-unsplash" />
+    <img srcset="./resizedImages/sir-manuel-sP_LGDp2HZI-unsplash_1x.jpg 480w, ./resizedImages/sir-manuel-sP_LGDp2HZI-unsplash_2x.jpg 960w, ./resizedImages/sir-manuel-sP_LGDp2HZI-unsplash_3x.jpg 1920w" alt="sir-manuel-sP_LGDp2HZI-unsplash" />
+    <img srcset="./resizedImages/the-blowup-HMyoLmScAyw-unsplash_1x.jpg 480w, ./resizedImages/the-blowup-HMyoLmScAyw-unsplash_2x.jpg 960w, ./resizedImages/the-blowup-HMyoLmScAyw-unsplash_3x.jpg 1920w" alt="the-blowup-HMyoLmScAyw-unsplash" />
+    <img srcset="./resizedImages/the-blowup-jfLejc0rAKI-unsplash_1x.jpg 480w, ./resizedImages/the-blowup-jfLejc0rAKI-unsplash_2x.jpg 960w, ./resizedImages/the-blowup-jfLejc0rAKI-unsplash_3x.jpg 1920w" alt="the-blowup-jfLejc0rAKI-unsplash" />
+    <img srcset="./resizedImages/the-blowup-oHCwlngw18w-unsplash_1x.jpg 480w, ./resizedImages/the-blowup-oHCwlngw18w-unsplash_2x.jpg 960w, ./resizedImages/the-blowup-oHCwlngw18w-unsplash_3x.jpg 1920w" alt="the-blowup-oHCwlngw18w-unsplash" />
+    <img srcset="./resizedImages/vander-films-byYV6s752Zk-unsplash_1x.jpg 480w, ./resizedImages/vander-films-byYV6s752Zk-unsplash_2x.jpg 960w, ./resizedImages/vander-films-byYV6s752Zk-unsplash_3x.jpg 1920w" alt="vander-films-byYV6s752Zk-unsplash" />
+</body>
+</html>

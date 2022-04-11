@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>1.1.	Minification des fichiers JavaScript et CSS</title>
+</head>
+<body id="result">
+    <div id="histo"></div>
+    <p id="moyenneTailleGagne" style='text-align: center'></p>
+    <div id="dotchart"></div>
+    <div id="timechart"></div>
+    <script src="plotly-2.11.1.min.js"></script>
+    <script>
+        // Permet de calculer la moyenne d'un tableau
+        function ArrayAvg(myArray) {
+            var i = 0, summ = 0, ArrayLen = myArray.length;
+            while (i < ArrayLen) {
+                summ = summ + myArray[i++];
+        }
+            return summ / ArrayLen;
+        }
+
+        // Fonction pour plot l'histogramme
+        function plot(y) {
+            var data = {
+                y,
+                type: 'box'
+            };
+
+            Plotly.newPlot('histo', [data]);
+        }
+
+        // Recupère un fichier et retourne le nombre d'octect obtenu
+        async function getFile(url) {
+            return new Promise(async (resolve, reject) => {
+                let response = await fetch(url);
+                const reader = response.body.getReader();
+
+                let receivedLength = 0; 
+                let chunks = []; 
+                while(true) {
+                    const {done, value} = await reader.read();
+
+                    if (done) {
+                        break;
+                    }
+
+                    chunks.push(value);
+                    receivedLength += value.length;
+
+                    console.log(`Received ${receivedLength}`);
+                }
+                resolve(receivedLength);
+            })
+        }
+
+        // Liste des fichiers JavaScript à télécharger
+        // const files = [
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/foundation.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/foundation.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.abide.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.abide.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.accordion.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.accordion.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.accordionMenu.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.accordionMenu.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.core.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.core.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.drilldown.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.drilldown.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.dropdown.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.dropdown.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.dropdownMenu.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.dropdownMenu.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.equalizer.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.equalizer.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.interchange.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.interchange.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.magellan.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.magellan.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.offcanvas.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.offcanvas.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.orbit.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.orbit.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.responsiveAccordionTabs.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.responsiveAccordionTabs.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.responsiveMenu.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.responsiveMenu.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.responsiveToggle.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.responsiveToggle.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.reveal.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.reveal.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.slider.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.slider.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.smoothScroll.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.smoothScroll.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.sticky.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.sticky.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.tabs.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.tabs.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.toggler.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.toggler.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.tooltip.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.tooltip.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.box.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.box.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.imageLoader.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.imageLoader.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.keyboard.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.keyboard.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.mediaQuery.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.mediaQuery.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.motion.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.motion.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.nest.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.nest.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.timer.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.timer.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.touch.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.touch.min.js'],
+        //     ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.triggers.js', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/js/plugins/foundation.util.triggers.min.js'],
+        //     ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/js/bootstrap.js', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/js/bootstrap.min.js'],
+        //     ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/js/bootstrap.bundle.js', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/js/bootstrap.bundle.min.js'],
+        //     ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/js/bootstrap.esm.js', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/js/bootstrap.esm.min.js'],
+        //     ['https://raw.githubusercontent.com/uikit/uikit/develop/dist/js/uikit.js', 'https://raw.githubusercontent.com/uikit/uikit/develop/dist/js/uikit.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/semantic.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/semantic.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/accordion.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/accordion.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/api.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/api.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/shape.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/shape.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/checkbox.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/checkbox.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dimmer.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dimmer.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dropdown.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dropdown.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/embed.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/embed.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/form.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/form.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/modal.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/modal.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/nag.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/nag.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/popup.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/popup.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/progress.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/progress.min.js'],
+        //     ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/rating.js', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/rating.min.js'],
+        // ];
+        
+        // Liste des fichiers CSS à télécharger
+        const files = [
+            ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation.css', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation.min.css'],
+            ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation-rtl.css', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation-rtl.min.css'],
+            ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation-prototype.css', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation-prototype.min.css'],
+            ['https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation-float.css', 'https://raw.githubusercontent.com/foundation/foundation-sites/develop/dist/css/foundation-float.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap.rtl.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap.rtl.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-utilities.rtl.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-utilities.rtl.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-utilities.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-utilities.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-reboot.rtl.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-reboot.rtl.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-reboot.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-reboot.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-grid.rtl.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-grid.rtl.min.css'],
+            ['https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-grid.css', 'https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap-grid.min.css'],
+            ['https://raw.githubusercontent.com/uikit/uikit/develop/dist/css/uikit.css', 'https://raw.githubusercontent.com/uikit/uikit/develop/dist/css/uikit.min.css'],
+            ['https://raw.githubusercontent.com/uikit/uikit/develop/dist/css/uikit-rtl.css', 'https://raw.githubusercontent.com/uikit/uikit/develop/dist/css/uikit-rtl.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/rating.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/rating.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/rail.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/rail.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/progress.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/progress.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/popup.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/popup.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/placeholder.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/placeholder.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/nag.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/nag.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/modal.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/modal.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/message.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/message.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/menu.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/menu.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/loader.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/loader.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/list.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/list.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/label.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/label.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/item.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/item.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/input.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/input.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/image.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/image.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/icon.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/icon.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/header.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/header.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/grid.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/grid.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/form.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/form.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/flag.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/flag.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/feed.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/feed.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/embed.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/embed.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dropdown.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dropdown.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/divider.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/divider.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dimmer.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/dimmer.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/container.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/container.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/comment.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/comment.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/checkbox.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/checkbox.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/card.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/card.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/button.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/button.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/breadcrumb.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/breadcrumb.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/ad.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/ad.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/accordion.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/accordion.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/semantic.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/semantic.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/sticky.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/sticky.min.css'],
+            ['https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/step.css', 'https://raw.githubusercontent.com/Semantic-Org/Semantic-UI/master/dist/components/step.min.css'],
+        ];
+
+        async function main() {
+            let filesStat = [];
+            let filesM = [];
+
+            // Recupère chaque fichier
+            for(let i = 0; i < files.length; i++) {
+                console.log("File number :", i);
+                let file, minFile;
+                [file, minFile] = files[i];
+
+                let x = await getFile(file);
+                let y = await getFile(minFile);
+                
+                filesStat[i] = [x, y];
+                filesM[i] = ((x - y) / x) * 100;
+            }
+            plot(filesM);
+
+            document.getElementById("moyenneTailleGagne").textContent = `En moyenne, un fichier minifié pèse ${Math.round(ArrayAvg(filesM))}% de moins.`;
+            
+            filesStat.sort(function(a, b) {
+                return a[0] - b[0];
+            })
+
+            var data = {
+                x: filesStat.map(stat => stat[0]),
+                y: filesStat.map(stat => stat[1]),
+                type: 'scatter'
+            };
+
+            // Plot les statistiques
+            Plotly.newPlot('dotchart', [data]);
+
+            // Plot un courbe de temps gagnés en fonction des octets sauvé
+            var dataTime = {
+                x: Array.from(Array(500000).keys()),
+                y: Array.from(Array(500000).keys()).map(y => y / 262144),
+                type: 'scatter'
+            };
+            console.log(dataTime)
+            Plotly.newPlot('timechart', [dataTime]);
+        }
+        main()
+    </script>
+</body>
+</html>

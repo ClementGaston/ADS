@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>1.5. Optimisation des images</title>
+</head>
+<body id="result">
+    <p id="gainJPG"></p>
+    <p id="gainWEBP"></p>
+    <p id="gainWEBP2"></p>
+    <div id="dotchart"></div>
+    <div id="histo"></div>
+    <script src="plotly-2.11.1.min.js"></script>
+    <script>
+        photos = [
+            'albert-dehon-yejC65pltJc-unsplash',
+            'annie-spratt-MmW8QX5Bp0c-unsplash',
+            'anton-maksimov-5642-su-3jDZM3rgpz8-unsplash',
+            'ardy-arjun-WfJ9rZBdWY8-unsplash',
+            'batuhan-dogan-RPHnmOqWxaY-unsplash',
+            'brittany-bendabout-iZX7yO1RTsE-unsplash',
+            'claudio-schwarz-lLqkzbMiPI-unsplash',
+            'claudio-schwarz-4bMmpwPzCIs-unsplash',
+            'claudio-schwarz-6iowSYmaFyo-unsplash',
+            'claudio-schwarz-8Syjmg44nFQ-unsplash',
+            'claudio-schwarz-CNuUu7F05Ao-unsplash',
+            'claudio-schwarz-EGfsYbZYd6Q-unsplash',
+            'claudio-schwarz-eh1DXCvFcds-unsplash',
+            'claudio-schwarz-F7g4gho79ds-unsplash',
+            'claudio-schwarz-Fa3Me1XTozo-unsplash',
+            'claudio-schwarz-IA9ywYR8ibw-unsplash',
+            'claudio-schwarz-J8njRHe3ay4-unsplash',
+            'claudio-schwarz-KAhK2qi0D1w-unsplash',
+            'claudio-schwarz-M23NYjYgw94-unsplash',
+            'claudio-schwarz-MGrIQvbxWws-unsplash',
+            'claudio-schwarz-Nc4hmYD7L7E-unsplash',
+            'claudio-schwarz-NtU1zWPHfvw-unsplash',
+            'claudio-schwarz-PEwWaaPNxjM-unsplash',
+            'claudio-schwarz-ptnzhzAz3bM-unsplash',
+            'claudio-schwarz-UKqP_6nZW1Q-unsplash',
+            'claudio-schwarz-V3n3U2R25M0-unsplash',
+            'claudio-schwarz-W7M6dlO7M_Y-unsplash',
+            'claudio-schwarz-WSaPvtvsjCc-unsplash',
+            'claudio-schwarz-ZMwQIlG8Ito-unsplash',
+            'gabriella-clare-marino-aNmGQmIQRpc-unsplash',
+            'gabriella-clare-marino-bB3auZ9wgug-unsplash',
+            'gabriella-clare-marino-eEPrua1EXfA-unsplash',
+            'gabriella-clare-marino-KG5S6fM3z_s-unsplash',
+            'gabriella-clare-marino-Mguuyn1TJIQ-unsplash',
+            'gabriella-clare-marino-SgNlTddwbys-unsplash',
+            'gabriella-clare-marino-z2FGLCb5amo-unsplash',
+            'halil-ibrahim-cetinkaya-l661E7tRKAU-unsplash',
+            'maksym-tymchyk-4RRvDen6rk4-unsplash',
+            'maksym-tymchyk-AAsuvkUFbzQ-unsplash',
+            'marc-kleen-MqQ6dpk7qfw-unsplash',
+            'micheile-com-B2oQudJevQY-unsplash',
+            'micheile-com-doeWwiscUPI-unsplash',
+            'mihajlo-sebalj-r_am9KeM0jU-unsplash',
+            'mitchell-luo-RJtd3FSXj4A-unsplash',
+            'sir-manuel-fT_lkiuxWBk-unsplash',
+            'sir-manuel-sP_LGDp2HZI-unsplash',
+            'the-blowup-HMyoLmScAyw-unsplash',
+            'the-blowup-jfLejc0rAKI-unsplash',
+            'the-blowup-oHCwlngw18w-unsplash',
+            'vander-films-byYV6s752Zk-unsplash'
+        ]
+
+
+        // Recupère un fichier et retourne le nombre d'octect obtenu
+        async function getFile(url) {
+            return new Promise(async (resolve, reject) => {
+                let response = await fetch(url);
+                const reader = response.body.getReader();
+
+                let receivedLength = 0; 
+                let chunks = []; 
+                while(true) {
+                    const {done, value} = await reader.read();
+
+                    if (done) {
+                        break;
+                    }
+
+                    chunks.push(value);
+                    receivedLength += value.length;
+
+                    console.log(`Received ${receivedLength}`);
+                }
+                resolve(receivedLength);
+            })
+        }
+
+        // Permet de calculer la moyenne d'un tableau
+        function ArrayAvg(myArray) {
+            var i = 0, summ = 0, ArrayLen = myArray.length;
+            while (i < ArrayLen) {
+                summ = summ + myArray[i++];
+        }
+            return summ / ArrayLen;
+        }
+
+        function plot() {
+            var trace1 = {
+                x: Array.from(Array(photos.length).keys()),
+                y: PNGSize,
+                type: 'scatter',
+                name: 'PNG'
+            };
+
+            var trace2 = {
+                x: Array.from(Array(photos.length).keys()),
+                y: JPGSize,
+                type: 'scatter',
+                name: 'JPG'
+            };
+
+            var trace3 = {
+                x: Array.from(Array(photos.length).keys()),
+                y: WEBPSize,
+                type: 'scatter',
+                name: 'WEBP'
+            };
+
+            // Plot les statistiques
+            Plotly.newPlot('dotchart', [trace1, trace2, trace3]);
+
+            var trace4 = {
+                y: JPGGain,
+                type: 'box',
+                name: 'PNG -> JPG'
+            };
+
+            var trace5 = {
+                y: WEBPGain,
+                type: 'box',
+                name: 'PNG -> WEBP'
+            };
+
+            var trace6 = {
+                y: WEBPGain2,
+                type: 'box',
+                name: 'JPG -> WEBP'
+            };
+
+            Plotly.newPlot('histo', [trace4, trace5, trace6]);
+            document.getElementById("gainJPG").textContent = `Gain PNG -> JPG : ${parseFloat(ArrayAvg(JPGGain)).toFixed(2)}%`
+            document.getElementById("gainWEBP").textContent = `Gain PNG -> WEBP : ${parseFloat(ArrayAvg(WEBPGain)).toFixed(2)}%`
+            document.getElementById("gainWEBP2").textContent = `Gain JPG -> WEBP : ${parseFloat(ArrayAvg(WEBPGain2)).toFixed(2)}%`
+        }
+
+        var PNGSize = [];
+        var JPGSize = [];
+        var WEBPSize = [];
+        var JPGGain = [];
+        var WEBPGain = [];
+        var WEBPGain2 = [];
+
+        async function main() {
+            for(let i = 0; i < photos.length; i++) {
+                PNGSize[i] = await getFile(`./images/${photos[i]}.png`);
+                JPGSize[i] = await getFile(`./images/${photos[i]}.jpg`);
+                WEBPSize[i] = await getFile(`./images/${photos[i]}.webp`);
+
+                JPGGain[i] = ((PNGSize[i] - JPGSize[i]) / PNGSize[i]) * 100;
+                WEBPGain[i] = ((PNGSize[i] - WEBPSize[i]) / PNGSize[i]) * 100;
+                WEBPGain2[i] = ((JPGSize[i] - WEBPSize[i]) / JPGSize[i]) * 100;
+            }
+            plot()
+        }
+        main()
+    </script>
+</body>
+</html>
